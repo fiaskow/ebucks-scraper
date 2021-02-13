@@ -6,6 +6,7 @@ const { rejects } = require('assert');
 const storage = require('node-persist');
 const Product = require('./product.js')
 const { Console } = require('console');
+var colors = require('colors');
 
 const baseUrl = 'https://www.ebucks.com';
 const shopUrl = '/web/shop/shopHome.do';
@@ -16,7 +17,7 @@ let myStorage;
 
 //obtain list of top level categories
 function getLinks(url, lvl) {
-    console.log("Retrieving level " + lvl + " links @: " + url);
+    console.log("Retrieving level " + lvl + " links @: " + url.blue);
     
     return new Promise( (resolve, reject) => {
 
@@ -31,7 +32,7 @@ function getLinks(url, lvl) {
                 //console.log(" ");
             })
     
-            resolve(lvl + " level links done.");
+            resolve(lvl + " level links done.".white);
             
         }).catch(err => {
             console.log(err);
@@ -45,7 +46,7 @@ function getCategoryboxLink(url, lvl) {
     return new Promise( (resolve, reject) => {
         
         got(url).then(response => {
-            console.log("Retrieving level " + lvl + " links @: " + url);
+            console.log("Retrieving level " + lvl + " links @: " + url.blue);
             const $ = cheerio.load(response.body);
             //#shopContent > div > div:nth-child(1) > div.categorybox-link
             $(".categorybox-frame > .categorybox-link")
@@ -176,11 +177,11 @@ start()
 })
 //Now persist the data in the map for future reference.
 .then(values => {
-    console.log("Found " + discountProducts.size + " discounted products");
+    console.log("Found " + discountProducts.size + " discounted products".white);
     for (let [key, obj] of discountProducts) {
-        console.log("R " + obj.price + " " + obj.name + " @ " + baseUrl + obj.url);
+        console.log(colors.green("R " + obj.price) + " " + colors.white(obj.name) + " @ " + baseUrl + obj.url);
     }
 
-    persistProducts(discountProducts, myStorage);
+    //persistProducts(discountProducts, myStorage);
 });
 
