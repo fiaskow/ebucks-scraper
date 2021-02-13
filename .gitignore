@@ -115,4 +115,8 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+# Application artifacts
 storage
+
+#Macos files
+.DS_Store
